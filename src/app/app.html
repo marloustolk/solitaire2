@@ -1,0 +1,50 @@
+<ng-container *ngTemplateOutlet="background"></ng-container>
+
+<div class="board">
+  <div class="card_row">
+    <app-stock
+      [(dropped)]="dropped"
+      (toFoundation)="toFoundation($event)"
+      [(cards)]="deck"
+      [(open)]="open"
+    ></app-stock>
+    <div class="empty_space"></div>
+    @for (foundation of foundations; track $index) {
+      <app-foundation [(dropped)]="dropped" [(cards)]="foundation"></app-foundation>
+    }
+  </div>
+  <div class="card_row">
+    @for (pile of piles; let i = $index; track i) {
+      <app-pile
+        [(dropped)]="dropped"
+        [id]="i"
+        [(cards)]="pile"
+        (toFoundation)="toFoundation($event)"
+      ></app-pile>
+    }
+  </div>
+</div>
+
+<div
+  id="overlay"
+  [style.display]="finish() ? 'block' : 'none'"
+  (click)="finish.set(false); startGame()"
+>
+  <div id="finish">You won!</div>
+</div>
+
+<ng-template #background>
+  <section class="grid-container">
+    <div class="grid-line"></div>
+    <div class="grid-line"></div>
+    <div class="grid-line"></div>
+    <div class="grid-line"></div>
+    <div class="grid-line"></div>
+    <div class="grid-line"></div>
+    <div class="grid-line"></div>
+    <div class="grid-line"></div>
+    <div class="grid-line"></div>
+    <div class="grid-line"></div>
+    <div class="grid-line"></div>
+  </section>
+</ng-template>

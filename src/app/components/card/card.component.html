@@ -1,0 +1,13 @@
+<div [id]="card().value" class="card" [class.open]="!card().closed">
+  <div class="card-inner">
+    <div class="card-back"></div>
+
+    <div class="card-front" [id]="card().value" [style.color]="getColor()">
+      <div class="top">{{ card().value }}</div>
+      <p class="center">
+        {{ getRankOfSuits() }}
+      </p>
+      <div class="bottom">{{ card().value }}</div>
+    </div>
+  </div>
+</div>

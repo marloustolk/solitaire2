@@ -1,0 +1,23 @@
+:host {
+    display: contents;
+    align-items: center;
+}
+
+.pile {
+    display: block;
+    width: 7.5rem;
+    height: 100%;
+}
+
+.card_container {
+    display: grid;
+    grid-template-rows: repeat(auto-fit, minmax(1.25rem, max-content));
+    color: #aaaaaa;
+}
+
+.empty {
+    background-color: #400040;
+    border-radius: 5%;
+    height: 8.75rem;
+    width: 6.25rem;
+}

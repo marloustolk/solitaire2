@@ -1,0 +1,13 @@
+<div class="pile" (drop)="canPlace($event) && drop($event)" (dragover)="dragover($event)">
+  @for (card of cards(); track card.value; let last = $last) {
+    <app-card
+      [card]="card"
+      [draggable]="last"
+      (dragstart)="dragstart($event)"
+      (dragend)="dragend($event)"
+    ></app-card>
+  }
+  @if (cards().length === 0) {
+    <div class="empty"></div>
+  }
+</div>
