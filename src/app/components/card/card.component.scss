@@ -1,7 +1,6 @@
 .card {
   display: flex;
   flex-direction: column;
-
   height: 8.75rem;
   width: 6.25rem;
   position: absolute;
@@ -117,9 +116,9 @@
 
 .card-back {
   --s: 2rem;
-  --c1: #4f8485;
-  --c2: #5c1167;
-  --c3: #a124b3;
+  --c1: #2a6667;
+  --c2: #46094f;
+  --c3: rgb(139, 7, 130);
 
   --_g: var(--c3) 0 120deg, #0000 0;
   background:

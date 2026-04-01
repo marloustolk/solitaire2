@@ -1,23 +1,18 @@
 <div class="stock">
   <div class="pile" (click)="flip()">
-    @for (card of cards(); track card.value; let index = $index; let last = $last) {
+    <div class="bottom"></div>
+    @for (card of cards(); track $index) {
       <app-card [card]="card"></app-card>
     }
-    @if (cards().length === 0) {
-      <div class="empty"></div>
-    }
   </div>
-  <div
-    class="pile"
-    (dblclick)="open().length > 0 && toFoundation.emit([7, open()[open().length - 1]])"
-  >
-    @for (card of open(); track card.value; let last = $last) {
+  <div class="pile">
+    @for (card of open().reverse(); track $index) {
       <app-card
-        class="w3-center w3-animate-top"
         [card]="card"
-        [draggable]="last"
-        (dragstart)="dragstart($event)"
-        (dragend)="dragend($event)"
+        [draggable]="$last"
+        (dragstart)="dragging.set([id(), [open()[0]]])"
+        (dragend)="dragging.set(undefined)"
+        (dblclick)="tryMove.emit([id(), open()[0]])"
       ></app-card>
     }
   </div>

@@ -1,39 +1,28 @@
-import { Component, effect, model, OnInit, Signal, signal } from '@angular/core';
+import { Component, effect, model, OnInit } from '@angular/core';
 import { PileComponent } from './components/pile/pile.component';
 import { Card, cardDeck, isAce, isOneRankHigher, suitIsSame } from './model/card.model';
 import { FoundationComponent } from './foundation/foundation.component';
 import { StockComponent } from './components/stock/stock.component';
-import { NgTemplateOutlet } from '@angular/common';
 
 @Component({
   selector: 'app-root',
-  imports: [PileComponent, FoundationComponent, StockComponent, NgTemplateOutlet],
+  imports: [PileComponent, FoundationComponent, StockComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
 export class App implements OnInit {
-  finish = signal<boolean>(false);
-  dropped = model<boolean>(false);
-  piles = [
-    signal<Card[]>([]),
-    signal<Card[]>([]),
-    signal<Card[]>([]),
-    signal<Card[]>([]),
-    signal<Card[]>([]),
-    signal<Card[]>([]),
-    signal<Card[]>([]),
-  ];
-  foundations = [signal<Card[]>([]), signal<Card[]>([]), signal<Card[]>([]), signal<Card[]>([])];
-  deck = signal<Card[]>([]);
-  open = signal<Card[]>([]);
+  CLOSED_STOCK = 0;
+  OPEN_STOCK = 1;
+  FOUNDATIONS = [2, 3, 4, 5];
+  PILES = [6, 7, 8, 9, 10, 11, 12];
+
+  playingCards: Card[][] = [];
+  dragging = model<[number, Card[]]>();
+  finish = model<boolean>(false);
 
   constructor() {
     effect(() => {
-      if (
-        this.piles.every((pile) => pile().every((card) => !card.closed)) &&
-        this.deck().length === 0 &&
-        this.open().length < 2
-      ) {
+      if (!this.dragging() && this.PILES.every((i) => this.playingCards[i].every((card) => !card.closed))) {
         this.finish.set(true);
       }
     });
@@ -45,37 +34,44 @@ export class App implements OnInit {
 
   startGame(): void {
     const deck = cardDeck();
+    this.playingCards = [];
 
-    for (let i = 0; i < 7; i++) {
-      let cards = deck.splice(0, i + 1);
-      this.piles[i].set(cards);
+    this.PILES.forEach((pile, index) => {
+      let cards = deck.splice(0, index + 1);
+      cards[0].closed = false;
+      this.playingCards[pile] = cards;
+    });
+
+    for (let foundation of this.FOUNDATIONS) {
+      this.playingCards[foundation] = [];
     }
-    for (let i = 0; i < 4; i++) {
-      this.foundations[i].set([]);
-    }
-    this.deck.set(deck);
-    this.piles.forEach((pile) => (pile()[0].closed = false));
+    this.playingCards[this.CLOSED_STOCK] = deck;
+    this.playingCards[this.OPEN_STOCK] = [];
   }
 
-  toFoundation(event: [number, Card]) {
-    const [i, card] = event;
-    for (let foundation of this.foundations) {
-      const topFoundation =
-        foundation().length > 0 ? foundation()[foundation().length - 1] : undefined;
+  drop(to: number, dragging: [number, Card[]] | undefined) {
+    if (!dragging) {
+      console.log('nothing to drop');
+      return;
+    }
+    this.dragging.set(dragging);
+    const [from, cards] = dragging;
+    for (let card of cards) {
+      this.playingCards[from].shift();
+      this.playingCards[to].unshift(card);
+    }
+    this.dragging.set(undefined);
+  }
+
+  tryMove([from, card]: [number, Card]) {
+    for (let foundation of this.FOUNDATIONS) {
+      const pile = this.playingCards[foundation];
+      const topCard = pile.length > 0 ? pile[0] : undefined;
       if (
-        (!topFoundation && isAce(card)) ||
-        (topFoundation && suitIsSame(card, topFoundation) && isOneRankHigher(card, topFoundation))
+        (!topCard && isAce(card)) ||
+        (topCard && suitIsSame(card, topCard) && isOneRankHigher(card, topCard))
       ) {
-        if (i === 7) {
-          const open = this.open();
-          open.pop();
-          this.open.set(open);
-        } else {
-          const pile = this.piles[i]();
-          pile.shift();
-          this.piles[i].set(pile);
-        }
-        foundation.set([...foundation(), card]);
+        this.drop(foundation, [from, [card]]);
         return;
       }
     }

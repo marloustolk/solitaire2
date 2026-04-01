@@ -1,25 +1,30 @@
-<ng-container *ngTemplateOutlet="background"></ng-container>
-
 <div class="board">
   <div class="card_row">
     <app-stock
-      [(dropped)]="dropped"
-      (toFoundation)="toFoundation($event)"
-      [(cards)]="deck"
-      [(open)]="open"
+      [id]="OPEN_STOCK"
+      [(cards)]="playingCards[CLOSED_STOCK]"
+      [(open)]="playingCards[OPEN_STOCK]"
+      [(dragging)]="dragging"
+      (tryMove)="tryMove($event)"
     ></app-stock>
     <div class="empty_space"></div>
-    @for (foundation of foundations; track $index) {
-      <app-foundation [(dropped)]="dropped" [(cards)]="foundation"></app-foundation>
+    @for (foundation of FOUNDATIONS; track foundation) {
+      <app-foundation
+        [id]="foundation"
+        [cards]="playingCards[foundation]"
+        [(dragging)]="dragging"
+        (dropped)="drop($event, dragging())"
+      ></app-foundation>
     }
   </div>
   <div class="card_row">
-    @for (pile of piles; let i = $index; track i) {
+    @for (pile of PILES; track pile) {
       <app-pile
-        [(dropped)]="dropped"
-        [id]="i"
-        [(cards)]="pile"
-        (toFoundation)="toFoundation($event)"
+        [id]="pile"
+        [cards]="playingCards[pile]"
+        [(dragging)]="dragging"
+        (dropped)="drop($event, dragging())"
+        (tryMove)="tryMove($event)"
       ></app-pile>
     }
   </div>
@@ -32,19 +37,3 @@
 >
   <div id="finish">You won!</div>
 </div>
-
-<ng-template #background>
-  <section class="grid-container">
-    <div class="grid-line"></div>
-    <div class="grid-line"></div>
-    <div class="grid-line"></div>
-    <div class="grid-line"></div>
-    <div class="grid-line"></div>
-    <div class="grid-line"></div>
-    <div class="grid-line"></div>
-    <div class="grid-line"></div>
-    <div class="grid-line"></div>
-    <div class="grid-line"></div>
-    <div class="grid-line"></div>
-  </section>
-</ng-template>

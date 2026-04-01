@@ -1,12 +1,14 @@
 <ng-template #card let-index>
   <div
     class="card_container"
-    [draggable]="!cards()[index].closed"
-    [id]="id() + '-' + index"
-    (dragstart)="dragstart($event)"
-    (dragend)="dragend($event)"
+    [draggable]="draggable(index)"
+    (dragstart)="dragstart(index)"
+    (dragend)="dragging.set(undefined)"
   >
-    <app-card [card]="cards()[index]"></app-card>
+    <app-card
+      [style.visibility]="isDragging(index) ? 'hidden' : 'visible'"
+      [card]="cards()[index]"
+    ></app-card>
     @if (index > 0) {
       <ng-container *ngTemplateOutlet="card; context: { $implicit: index - 1 }" />
     }
@@ -15,14 +17,12 @@
 
 <div
   class="pile"
-  (drop)="canPlace($event) && drop($event)"
-  (dragover)="dragover($event)"
+  (drop)="canPlace() && dropped.emit(id())"
+  (dragover)="$event.preventDefault()"
   (click)="flip()"
-  (dblclick)="cards().length > 0 && toFoundation.emit([id(), cards()[0]])"
+  (dblclick)="cards().length > 0 && tryMove.emit([id(), cards()[0]])"
 >
   @if (cards() && cards().length > 0) {
     <ng-container *ngTemplateOutlet="card; context: { $implicit: cards().length - 1 }" />
-  } @else {
-    <div class="empty"></div>
   }
 </div>
