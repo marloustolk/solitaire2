@@ -4,9 +4,13 @@
 
     <div class="card-front" [id]="card().value" [style.color]="getColor()">
       <div class="top">{{ card().value }}</div>
-      <p class="center">
-        {{ getRankOfSuits() }}
-      </p>
+      <div class="center">
+        <div [class]="'rank rank' + getRank()">
+          @for (suit of getSuits(); track $index) {
+            <div>{{ suit }}</div>
+          }
+        </div>
+      </div>
       <div class="bottom">{{ card().value }}</div>
     </div>
   </div>

@@ -14,16 +14,23 @@ export class CardComponent {
     return isRed(this.card()) ? "#b01030" : "#000000";
   }
 
-  getRankOfSuits(): string {
+  getRank(): string {
+    return this.card().value.substring(1);
+  }
+
+  getSuits(): string[] {
     const suit = this.card().value.substring(0, 1);
-    const rank = this.card().value.substring(1);
+    const rank = this.getRank();
+
     switch (rank) {
-      case 'A': return suit;
       case 'J':
       case 'Q':
-      case 'K': return rank;
-      default: return suit;
-      // TODO: default: return Array.from(Array(parseInt(rank)).keys()).map(nr => suit).join(' ');
+      case 'K':
+        return [rank];
+      case 'A':
+        return [suit];
+      default:
+        return Array.from(Array(parseInt(rank)).keys()).map(() => suit);
     }
   }
 }
