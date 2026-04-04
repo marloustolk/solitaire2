@@ -2,10 +2,12 @@ import { Component, input, model, output } from '@angular/core';
 import { Card, isKing, isOneRankHigher, isRed } from '../../model/card.model';
 import { CardComponent } from '../card/card.component';
 import { NgTemplateOutlet } from '@angular/common';
+import { Drag } from '../../directives/drag.directive';
+import { Drop } from "../../directives/drop.directive";
 
 @Component({
   selector: 'app-pile',
-  imports: [CardComponent, NgTemplateOutlet],
+  imports: [CardComponent, Drag, NgTemplateOutlet, Drop],
   templateUrl: './pile.component.html',
   styleUrl: './pile.component.scss',
 })
@@ -14,7 +16,7 @@ export class PileComponent {
   cards = input<Card[]>([]);
   dragging = model<[number, Card[]]>();
   dropped = output<number>();
-  tryMove = output<[number, Card]>();
+  toFoundation = output<[number, Card]>();
 
   flip(): void {
     const topCard = this.cards()?.[0] ?? undefined;
@@ -27,11 +29,6 @@ export class PileComponent {
     return !this.cards()[index].closed;
   }
 
-  isDragging(index: number): boolean {
-    const dragging = this.dragging();
-    return dragging ? dragging[0] === this.id() && dragging[1].includes(this.cards()[index]) : false;
-  }
-
   dragstart(index: number): void {
     if (!this.dragging() && this.draggable(index)) {
       const cards = this.cards().filter((_card, i) => i <= index).reverse();
@@ -40,8 +37,12 @@ export class PileComponent {
   }
 
   canPlace(): boolean {
-    const cardToPlace = this.dragging()![1][0];
-    const currentTopCard = this.cards()?.[0] ?? undefined;
+    const dragging = this.dragging();
+    if (!dragging) {
+      return false;
+    }
+    const cardToPlace = dragging[1][0];
+    const currentTopCard = this.cards().length > 0 ? this.cards()[0] : undefined;
     if (currentTopCard && currentTopCard.closed) {
       return false;
     }

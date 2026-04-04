@@ -1,0 +1,11 @@
+<div class="pile" (appDrop)="canPlace() && dropped.emit(id())">
+  <div class="bottom"></div>
+  @for (_ of cards(); track $index) {
+    <app-card
+      [card]="cards()[cards().length - 1 - $index]"
+      [appDrag]="$last"
+      (appDragStart)="dragstart()"
+      (appDragEnd)="dragging.set(undefined)"
+    ></app-card>
+  }
+</div>

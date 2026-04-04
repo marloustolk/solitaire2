@@ -1,11 +1,12 @@
 import { Component, input, model, output } from '@angular/core';
 import { CardComponent } from '../card/card.component';
 import { Card } from '../../model/card.model';
+import { Drag } from "../../directives/drag.directive";
 
 
 @Component({
   selector: 'app-stock',
-  imports: [CardComponent],
+  imports: [CardComponent, Drag],
   templateUrl: './stock.component.html',
   styleUrl: './stock.component.scss',
 })
@@ -14,7 +15,7 @@ export class StockComponent {
   cards = model<Card[]>([]);
   open = model<Card[]>([]);
   dragging = model<[number, Card[]]>();
-  tryMove = output<[number, Card]>();
+  toFoundation = output<[number, Card]>();
 
   flip(): void {
     let closed = this.cards();

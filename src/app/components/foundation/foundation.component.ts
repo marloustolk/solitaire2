@@ -1,10 +1,12 @@
 import { Component, input, model, output } from '@angular/core';
-import { Card, isOneRankHigher, isAce } from '../model/card.model';
-import { CardComponent } from '../components/card/card.component';
+import { Card, isOneRankHigher, isAce } from '../../model/card.model';
+import { CardComponent } from '../card/card.component';
+import { Drag } from "../../directives/drag.directive";
+import { Drop } from '../../directives/drop.directive';
 
 @Component({
   selector: 'app-foundation',
-  imports: [CardComponent],
+  imports: [CardComponent, Drag, Drop],
   templateUrl: './foundation.component.html',
   styleUrl: './foundation.component.scss',
 })
@@ -15,14 +17,17 @@ export class FoundationComponent {
   dropped = output<number>();
 
   dragstart(): void {
-    const card = this.cards()[this.cards().length - 1];
+    const card = this.cards()[0];
     this.dragging.set([this.id(), [card]]);
   }
 
   canPlace(): boolean {
-    const cards = this.cards();
-    const cardToPlace = this.dragging()![1][0];
-    const currentTopCard = cards.length > 0 ? cards[0] : undefined;
+    const dragging = this.dragging();
+    if (!dragging) {
+      return false;
+    }
+    const cardToPlace = dragging[1][0];
+    const currentTopCard = this.cards().length > 0 ? this.cards()[0] : undefined;
     if (currentTopCard && cardToPlace.value.substring(0, 1) === currentTopCard.value.substring(0, 1)) {
       return isOneRankHigher(cardToPlace, currentTopCard);
     }

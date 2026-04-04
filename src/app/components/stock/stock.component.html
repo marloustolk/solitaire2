@@ -6,13 +6,12 @@
     }
   </div>
   <div class="pile">
-    @for (card of open().reverse(); track $index) {
+    @for (card of open(); track $index) {
       <app-card
-        [card]="card"
-        [draggable]="$last"
-        (dragstart)="dragging.set([id(), [open()[0]]])"
-        (dragend)="dragging.set(undefined)"
-        (dblclick)="tryMove.emit([id(), open()[0]])"
+        [card]="open()[open().length - 1 - $index]"
+        [appDrag]="$last"
+        (appDragStart)="dragging.set([id(), [open()[0]]])"
+        (dblclick)="toFoundation.emit([id(), open()[0]])"
       ></app-card>
     }
   </div>

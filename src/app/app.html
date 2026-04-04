@@ -5,7 +5,7 @@
       [(cards)]="playingCards[CLOSED_STOCK]"
       [(open)]="playingCards[OPEN_STOCK]"
       [(dragging)]="dragging"
-      (tryMove)="tryMove($event)"
+      (toFoundation)="toFoundation($event)"
     ></app-stock>
     <div class="empty_space"></div>
     @for (foundation of FOUNDATIONS; track foundation) {
@@ -24,7 +24,7 @@
         [cards]="playingCards[pile]"
         [(dragging)]="dragging"
         (dropped)="drop($event, dragging())"
-        (tryMove)="tryMove($event)"
+        (toFoundation)="toFoundation($event)"
       ></app-pile>
     }
   </div>

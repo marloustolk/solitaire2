@@ -2,7 +2,17 @@
   user-select: none;
 }
 
-body { 
+body {
   background-color: black;
   height: 100vh;
+  overflow: hidden;
+}
+
+.draggable {
+  touch-action: none;
+  cursor: grab;
+}
+
+.draggable:active {
+  cursor: grabbing;
 }

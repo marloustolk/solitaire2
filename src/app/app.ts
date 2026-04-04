@@ -1,7 +1,7 @@
 import { Component, effect, model, OnInit } from '@angular/core';
 import { PileComponent } from './components/pile/pile.component';
 import { Card, cardDeck, isAce, isOneRankHigher, suitIsSame } from './model/card.model';
-import { FoundationComponent } from './foundation/foundation.component';
+import { FoundationComponent } from './components/foundation/foundation.component';
 import { StockComponent } from './components/stock/stock.component';
 
 @Component({
@@ -22,7 +22,12 @@ export class App implements OnInit {
 
   constructor() {
     effect(() => {
-      if (!this.dragging() && this.PILES.every((i) => this.playingCards[i].every((card) => !card.closed))) {
+      if (
+        !this.dragging() &&
+        this.playingCards[this.CLOSED_STOCK].length === 0 &&
+        this.playingCards[this.OPEN_STOCK].length < 2 &&
+        this.PILES.every((i) => this.playingCards[i].every((card) => !card.closed))
+      ) {
         this.finish.set(true);
       }
     });
@@ -63,7 +68,7 @@ export class App implements OnInit {
     this.dragging.set(undefined);
   }
 
-  tryMove([from, card]: [number, Card]) {
+  toFoundation([from, card]: [number, Card]) {
     for (let foundation of this.FOUNDATIONS) {
       const pile = this.playingCards[foundation];
       const topCard = pile.length > 0 ? pile[0] : undefined;
