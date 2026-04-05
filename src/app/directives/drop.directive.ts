@@ -1,27 +1,31 @@
-import { computed, Directive, ElementRef, inject, output } from '@angular/core';
+import { Directive, ElementRef, inject, output } from '@angular/core';
 import { DragService } from '../services/drag.service';
 
 @Directive({
   selector: '[appDrop]',
   host: {
-    '(document:pointerup)': 'inDropZone() && appDrop.emit()'
+    '(document:pointerup)': 'onPointerUp($event)'
   }
 })
 export class Drop {
-  appDrop = output();
+  appDrop = output<void>();
 
   private service = inject(DragService);
   private el = inject(ElementRef);
 
-  inDropZone = computed(() => {
+  onPointerUp(event: PointerEvent) {
     const dragging = this.service.dragging();
-    if (dragging) {
-      const { left, right, top, bottom } = (this.el.nativeElement as HTMLElement).getBoundingClientRect();
-      const element = dragging[0].getBoundingClientRect();
-      const middleX = element.left + dragging[0].offsetWidth / 2
-      const middleY = element.top + dragging[0].offsetHeight / 2
-      return (middleX >= left && middleX <= right) && (middleY >= top && middleY <= bottom);
+    if (!dragging) {
+      return;
     }
-    return false;
-  })
+    const { left, right, top, bottom } = (this.el.nativeElement as HTMLElement).getBoundingClientRect();
+    if (
+      event.clientX >= left &&
+      event.clientX <= right &&
+      event.clientY >= top &&
+      event.clientY <= bottom
+    ) {
+      this.appDrop.emit();
+    }
+  }
 }

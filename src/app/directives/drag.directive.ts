@@ -6,12 +6,13 @@ import { DragService } from '../services/drag.service';
   host: {
     '[class.draggable]': 'appDrag()',
     '(pointerdown)': 'appDrag() && dragStart($event)',
-    '(document:pointerup)': 'service.stopDragging($event); appDragEnd.emit()',
+    '(document:pointerup)': 'service.stopDragging(); appDragEnd.emit()',
     '(document:pointermove)': 'service.drag($event)',
   }
 })
 export class Drag {
   appDrag = input.required<boolean>();
+  appDragIndex = input.required<number>();
   appDragEnd = output();
   appDragStart = output();
   service = inject(DragService);
@@ -19,8 +20,11 @@ export class Drag {
   private el = inject(ElementRef);
 
   dragStart(event: PointerEvent) {
-    event.preventDefault(); // voorkomt scroll op mobiel
-    const dragging = this.service.startDragging(event, this.el.nativeElement);
+    event.preventDefault();
+    const parent = this.el.nativeElement.parentElement;
+    const elements = Array.from(parent.children).slice(this.appDragIndex()) as HTMLElement[];
+
+    const dragging = this.service.startDragging(event, elements);
     if (dragging) {
       this.appDragStart.emit();
     }

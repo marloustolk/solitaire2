@@ -4,8 +4,54 @@
 
 body {
   background-color: black;
-  height: 100vh;
+  background-image: url('./assets/grid.jpg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: max(100vh, 100vw);
   overflow: hidden;
+}
+
+@media (orientation: portrait) {
+  body {
+    background-size: 100vh auto !important;
+  }
+  .card_container_pile {
+    top: calc(var(--index) * 7%) !important;
+  }
+  .empty {
+    height: 12vh !important;
+  }
+  .card {
+    height: 12vh !important;
+  }
+  .top,
+  .bottom {
+     font-size: 2vh !important;
+  }
+  .center {
+    font-size: 2.5vh !important;
+    .rank2,
+    .rank4,
+    .rank5 {
+      line-height: 4vh !important;
+    }
+    .rank5 div:nth-child(3),
+    .rank7 div:nth-child(5),
+    .rank9 div:nth-child(7),
+    .rank10 div:nth-child(3),
+    .rank10 div:nth-child(8) {
+      line-height: .5vh !important;
+    }
+    .rank6 {
+      line-height: 2.5vh !important;
+    }
+    .rank7, .rank8 {
+      line-height: 2vh !important;
+    }
+    .rank9, .rank10 {
+      line-height: 1.5vh !important;
+    }
+  }
 }
 
 .draggable {

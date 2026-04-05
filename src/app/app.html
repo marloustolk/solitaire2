@@ -1,5 +1,5 @@
 <div class="board">
-  <div class="card_row">
+  <div class="card_row top">
     <app-stock
       [id]="OPEN_STOCK"
       [(cards)]="playingCards[CLOSED_STOCK]"
@@ -8,16 +8,18 @@
       (toFoundation)="toFoundation($event)"
     ></app-stock>
     <div class="empty_space"></div>
-    @for (foundation of FOUNDATIONS; track foundation) {
-      <app-foundation
-        [id]="foundation"
-        [cards]="playingCards[foundation]"
-        [(dragging)]="dragging"
-        (dropped)="drop($event, dragging())"
-      ></app-foundation>
-    }
+    <div class="foundations">
+      @for (foundation of FOUNDATIONS; track foundation) {
+        <app-foundation
+          [id]="foundation"
+          [cards]="playingCards[foundation]"
+          [(dragging)]="dragging"
+          (dropped)="drop($event, dragging())"
+        ></app-foundation>
+      }
+    </div>
   </div>
-  <div class="card_row">
+  <div class="card_row bottom">
     @for (pile of PILES; track pile) {
       <app-pile
         [id]="pile"
@@ -29,9 +31,8 @@
     }
   </div>
 </div>
-
 <div
-  id="overlay"
+  id="finish-overlay"
   [style.display]="finish() ? 'block' : 'none'"
   (click)="finish.set(false); startGame()"
 >

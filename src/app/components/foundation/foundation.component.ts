@@ -17,7 +17,7 @@ export class FoundationComponent {
   dropped = output<number>();
 
   dragstart(): void {
-    const card = this.cards()[0];
+    const card = this.cards()[this.cards().length - 1];
     this.dragging.set([this.id(), [card]]);
   }
 
@@ -27,7 +27,7 @@ export class FoundationComponent {
       return false;
     }
     const cardToPlace = dragging[1][0];
-    const currentTopCard = this.cards().length > 0 ? this.cards()[0] : undefined;
+    const currentTopCard = this.cards().length > 0 ? this.cards()[this.cards().length - 1] : undefined;
     if (currentTopCard && cardToPlace.value.substring(0, 1) === currentTopCard.value.substring(0, 1)) {
       return isOneRankHigher(cardToPlace, currentTopCard);
     }

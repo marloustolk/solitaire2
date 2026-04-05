@@ -43,7 +43,7 @@ export class App implements OnInit {
 
     this.PILES.forEach((pile, index) => {
       let cards = deck.splice(0, index + 1);
-      cards[0].closed = false;
+      cards[cards.length - 1].closed = false;
       this.playingCards[pile] = cards;
     });
 
@@ -62,8 +62,12 @@ export class App implements OnInit {
     this.dragging.set(dragging);
     const [from, cards] = dragging;
     for (let card of cards) {
-      this.playingCards[from].shift();
-      this.playingCards[to].unshift(card);
+      this.playingCards[from].pop();
+      this.playingCards[to].push({ value: card.value, closed: false });
+    }
+    if (this.PILES.includes(from) && this.playingCards[from].length > 0) {
+      const pile = this.playingCards[from];
+      pile[pile.length - 1].closed = false;
     }
     this.dragging.set(undefined);
   }

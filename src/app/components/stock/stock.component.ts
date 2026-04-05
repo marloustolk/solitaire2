@@ -26,9 +26,9 @@ export class StockComponent {
       this.cards.set(open.reverse());
       this.open.set([]);
     } else {
-      const toFlip = closed.shift()!;
+      const toFlip = closed.pop()!;
       toFlip.closed = false;
-      this.open.set([toFlip, ...this.open()]);
+      this.open.set([...this.open(), toFlip]);
     }
   }
 }

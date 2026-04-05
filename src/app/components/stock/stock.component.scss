@@ -1,19 +1,32 @@
+:host {
+  height: 100%;
+  width: 100%;
+}
+
 .stock {
-    display: flex;
-    flex-direction: row;
-    height: 100%;
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  justify-content: space-between;
 }
 
 .pile {
-    display: grid;
-    grid-template-rows: repeat(auto-fit, 0.1rem);
-    width: 7.5rem;
+  position: relative;
+  width: 100%;
+  height: 100%;
 }
 
-.bottom {
-    position: absolute;
-    background-color: #400040;
-    border-radius: 5%;
-    height: 8.75rem;
-    width: 6.25rem;
+.card_container {
+  position: absolute;
+  top: calc(var(--index) * 0.5%);
+  left: 0;
+  width: 100%;
+}
+
+.empty {
+  position: absolute;
+  background-color: #400040;
+  border-radius: 5%;
+  height: 20vh;
+  aspect-ratio: 2 / 3;
 }

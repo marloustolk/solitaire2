@@ -1,12 +1,14 @@
 :host {
-  width: 6.25rem;
+  display: block;
+  height: 20vh;
+  aspect-ratio: 2 / 3;
 }
 
 .card {
   display: flex;
   flex-direction: column;
-  height: 8.75rem;
-  width: 6.25rem;
+  height: 20vh;
+  aspect-ratio: 2 / 3;
   position: absolute;
   perspective: 1000px;
 }
@@ -46,9 +48,9 @@
 
   .top {
     position: absolute;
-    top: 0.1rem;
-    left: 0.2rem;
-    font-size: 1rem;
+    top: 1%;
+    left: 2%;
+    font-size: 2.5vh;
   }
 
   .center {
@@ -57,7 +59,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
     width: 100%;
-    font-size: 2rem;
+    font-size: 4vh;
     text-align: center;
 
     .rank {
@@ -66,15 +68,13 @@
       flex-wrap: wrap;
     }
     .rank2,
-    .rank4 {
-      line-height: 4.7rem;
+    .rank4,
+    .rank5 {
+      line-height: 10vh;
     }
     .rank2 div,
     .rank3 div {
       width: 100%;
-    }
-    .rank5 {
-      line-height: 4.5rem;
     }
     .rank4 div,
     .rank5 div,
@@ -91,35 +91,35 @@
     .rank10 div:nth-child(3),
     .rank10 div:nth-child(8) {
       width: 100%;
-      line-height: .2rem;
+      line-height: 1vh;
     }
     .rank6 {
-      line-height: 2.2rem;
+      line-height: 5vh;
     }
     .rank7 {
-      line-height: 2.2rem;
+      line-height: 4.5vh;
     }
     .rank8 {
-      line-height: 1.5rem;
+      line-height: 3.5vh;
     }
     .rank9 {
-      line-height: 1.5rem;
+      line-height: 3vh;
     }
     .rank10 {
-      line-height: 1.5rem;
+      line-height: 3vh;
     }
   }
 
   .bottom {
     position: absolute;
-    bottom: 0.2rem;
-    right: 0.2rem;
-    font-size: 1rem;
+    bottom: 2%;
+    right: 2%;
+    font-size: 2.5vh;
   }
 }
 
 .card-back {
-  --s: 2rem;
+  --s: 4vh;
   --c1: #2a6667;
   --c2: #46094f;
   --c3: rgb(139, 7, 130);

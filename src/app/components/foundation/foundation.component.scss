@@ -1,13 +1,25 @@
-.pile {
-    display: block;
-    width: 7.5rem;
-    height: 8.75rem;
+:host {
+  height: 100%;
+  width: 100%;
 }
 
-.bottom {
-    position: absolute;
-    background-color: #400040;
-    border-radius: 5%;
-    height: 8.75rem;
-    width: 6.25rem;
+.pile {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.card_container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+.empty {
+  position: absolute;
+  background-color: #400040;
+  border-radius: 5%;
+  height: 20vh;
+  aspect-ratio: 2 / 3;
 }

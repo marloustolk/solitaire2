@@ -1,24 +1,18 @@
-<ng-template #card let-index>
-  <div
-    class="card_container"
-    [appDrag]="draggable(index)"
-    (appDragStart)="dragstart(index)"
-    (appDragEnd)="dragging.set(undefined)"
-  >
-    <app-card [card]="cards()[index]"></app-card>
-    @if (index > 0) {
-      <ng-container *ngTemplateOutlet="card; context: { $implicit: index - 1 }" />
-    }
-  </div>
-</ng-template>
-
 <div
   class="pile"
   (appDrop)="canPlace() && dropped.emit(id())"
-  (click)="flip()"
-  (dblclick)="cards().length > 0 && toFoundation.emit([id(), cards()[0]])"
+  (dblclick)="cards().length > 0 && toFoundation.emit([id(), cards()[cards().length - 1]])"
 >
-  @if (cards() && cards().length > 0) {
-    <ng-container *ngTemplateOutlet="card; context: { $implicit: cards().length - 1 }" />
+  @for (card of cards(); let i = $index; track i) {
+    <div
+      class="card_container_pile"
+      [style.--index]="i"
+      [appDrag]="draggable(i)"
+      [appDragIndex]="i"
+      (appDragStart)="dragstart(i)"
+      (appDragEnd)="dragging.set(undefined)"
+    >
+      <app-card [card]="card"></app-card>
+    </div>
   }
 </div>

@@ -1,13 +1,12 @@
 import { Component, input, model, output } from '@angular/core';
 import { Card, isKing, isOneRankHigher, isRed } from '../../model/card.model';
 import { CardComponent } from '../card/card.component';
-import { NgTemplateOutlet } from '@angular/common';
 import { Drag } from '../../directives/drag.directive';
-import { Drop } from "../../directives/drop.directive";
+import { Drop } from '../../directives/drop.directive';
 
 @Component({
   selector: 'app-pile',
-  imports: [CardComponent, Drag, NgTemplateOutlet, Drop],
+  imports: [CardComponent, Drag, Drop],
   templateUrl: './pile.component.html',
   styleUrl: './pile.component.scss',
 })
@@ -18,20 +17,13 @@ export class PileComponent {
   dropped = output<number>();
   toFoundation = output<[number, Card]>();
 
-  flip(): void {
-    const topCard = this.cards()?.[0] ?? undefined;
-    if (topCard) {
-      topCard.closed = false;
-    }
-  }
-
   draggable(index: number): boolean {
     return !this.cards()[index].closed;
   }
 
   dragstart(index: number): void {
     if (!this.dragging() && this.draggable(index)) {
-      const cards = this.cards().filter((_card, i) => i <= index).reverse();
+      const cards = this.cards().filter((_card, i) => i >= index);
       this.dragging.set([this.id(), cards]);
     }
   }
@@ -42,13 +34,15 @@ export class PileComponent {
       return false;
     }
     const cardToPlace = dragging[1][0];
-    const currentTopCard = this.cards().length > 0 ? this.cards()[0] : undefined;
-    if (currentTopCard && currentTopCard.closed) {
-      return false;
+    const topCard = this.topCard();
+    if (topCard && isRed(cardToPlace) !== isRed(topCard)) {
+      return isOneRankHigher(topCard, cardToPlace);
     }
-    if (currentTopCard && isRed(cardToPlace) !== isRed(currentTopCard)) {
-      return isOneRankHigher(currentTopCard, cardToPlace);
-    }
-    return !currentTopCard && isKing(cardToPlace);
+    return !topCard && isKing(cardToPlace);
+  }
+
+  private topCard(): Card | undefined {
+    const cards = this.cards();
+    return cards.length > 0 ? cards[cards.length - 1] : undefined;
   }
 }

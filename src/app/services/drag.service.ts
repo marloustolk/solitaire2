@@ -4,17 +4,16 @@ import { Injectable, signal } from '@angular/core';
   providedIn: 'root',
 })
 export class DragService {
-  dragging = signal<[HTMLElement, number, number] | undefined>(undefined);
+  dragging = signal<{
+    elements: HTMLElement[];
+    startX: number;
+    startY: number;
+  } | undefined>(undefined);
 
-  startDragging(event: PointerEvent, element: HTMLElement): boolean {
+  startDragging(event: PointerEvent, elements: HTMLElement[]): boolean {
     if (!this.dragging()) {
-      const { left, top, } = element.getBoundingClientRect();
-      const x = event.clientX - left;
-      const y = event.clientY - top;
-      this.dragging.set([element, x, y]);
-
-      this.moveElementToPointer(event);
-      element.setPointerCapture(event.pointerId);
+      this.dragging.set({ elements, startX: event.clientX, startY: event.clientY });
+      elements.forEach(element => element.style.zIndex = '2');
       return true;
     }
     return false;
@@ -22,31 +21,27 @@ export class DragService {
 
   drag(event: PointerEvent) {
     if (this.dragging()) {
-      this.moveElementToPointer(event);
+      this.moveElements(event);
     }
   }
 
-  stopDragging(event: PointerEvent) {
+  stopDragging() {
     const dragging = this.dragging();
     if (dragging) {
-      const element = dragging[0];
-      element.style.position = 'static';
-      element.style.zIndex = 'unset'
-      element.style.left = 'unset';
-      element.style.top = 'unset';
-      element.releasePointerCapture(event.pointerId);
-      this.dragging.set(undefined)
+      dragging.elements.forEach(element => {
+        element.style.zIndex = '';
+        element.style.transform = '';
+      });
+      this.dragging.set(undefined);
     }
   }
 
-  private moveElementToPointer(event: PointerEvent) {
+  private moveElements(event: PointerEvent) {
     const dragging = this.dragging();
-    if (dragging) {
-      const [element, x, y] = dragging;
-      element.style.position = 'absolute';
-      element.style.zIndex = '1'
-      element.style.left = (event.clientX - x).toString().concat('px');
-      element.style.top = (event.clientY - y).toString().concat('px');
-    }
+    if (!dragging) return;
+    const { elements, startX, startY } = dragging;
+    const dx = event.clientX - startX;
+    const dy = event.clientY - startY;
+    elements.forEach(element => element.style.transform = `translate(${dx}px, ${dy}px)`);
   }
 }
