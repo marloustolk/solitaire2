@@ -75,7 +75,7 @@ export class App implements OnInit {
   toFoundation([from, card]: [number, Card]) {
     for (let foundation of this.FOUNDATIONS) {
       const pile = this.playingCards[foundation];
-      const topCard = pile.length > 0 ? pile[0] : undefined;
+      const topCard = pile.length > 0 ? pile[pile.length - 1] : undefined;
       if (
         (!topCard && isAce(card)) ||
         (topCard && suitIsSame(card, topCard) && isOneRankHigher(card, topCard))
