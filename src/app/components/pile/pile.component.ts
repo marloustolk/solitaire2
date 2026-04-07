@@ -13,9 +13,9 @@ import { Drop } from '../../directives/drop.directive';
 export class PileComponent {
   id = input.required<number>();
   cards = input<Card[]>([]);
-  dragging = model<[number, Card[]]>();
+  dragging = model<{ from: number, cards: Card[] }>();
   dropped = output<number>();
-  toFoundation = output<[number, Card]>();
+  toFoundation = output<{ from: number, card: Card }>();
 
   draggable(index: number): boolean {
     return !this.cards()[index].closed;
@@ -24,7 +24,7 @@ export class PileComponent {
   dragstart(index: number): void {
     if (!this.dragging() && this.draggable(index)) {
       const cards = this.cards().filter((_card, i) => i >= index);
-      this.dragging.set([this.id(), cards]);
+      this.dragging.set({ from: this.id(), cards });
     }
   }
 
@@ -33,7 +33,7 @@ export class PileComponent {
     if (!dragging) {
       return false;
     }
-    const cardToPlace = dragging[1][0];
+    const cardToPlace = dragging.cards[0];
     const topCard = this.topCard();
     if (topCard && isRed(cardToPlace) !== isRed(topCard)) {
       return isOneRankHigher(topCard, cardToPlace);

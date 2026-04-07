@@ -1,0 +1,6 @@
+<div class="menu">
+  <a href="https://epibratie.nl" class="button">Home</a>
+  <button (click)="newGame.emit()">New Game</button>
+  <button (click)="restart.emit()" [disabled]="notStarted()">Restart Game</button>
+  <button (click)="undo.emit()" [disabled]="notStarted()">Undo</button>
+</div>

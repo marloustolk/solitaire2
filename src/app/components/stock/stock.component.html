@@ -9,18 +9,20 @@
   </div>
   <div
     class="pile"
-    (dblclick)="open().length > 1 && toFoundation.emit([id(), open()[open().length - 1]])"
+    (dblclick)="
+      open().length > 1 && toFoundation.emit({ from: id(), card: open()[open().length - 1] })
+    "
   >
     @for (card of open(); track $index) {
       <div
-        class="card_container"
+        class="card_container open"
         [style.--index]="$index"
         [appDrag]="$last"
         [appDragIndex]="$index"
-        (appDragStart)="dragging.set([id(), [open()[open().length - 1]]])"
+        (appDragStart)="dragging.set({ from: id(), cards: [open()[open().length - 1]] })"
         (appDragEnd)="dragging.set(undefined)"
       >
-        <app-card [card]="card"></app-card>
+        <app-card [card]="card" [animate.enter]="animate && 'slide'"></app-card>
       </div>
     }
   </div>

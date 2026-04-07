@@ -1,7 +1,9 @@
 <div
   class="pile"
   (appDrop)="canPlace() && dropped.emit(id())"
-  (dblclick)="cards().length > 0 && toFoundation.emit([id(), cards()[cards().length - 1]])"
+  (dblclick)="
+    cards().length > 0 && toFoundation.emit({ from: id(), card: cards()[cards().length - 1] })
+  "
 >
   @for (card of cards(); let i = $index; track i) {
     <div

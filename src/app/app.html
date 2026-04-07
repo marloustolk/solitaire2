@@ -1,3 +1,9 @@
+<app-menu
+  (newGame)="newGame()"
+  (restart)="restart()"
+  (undo)="undo()"
+  [notStarted]="moves.length === 0"
+></app-menu>
 <div class="board">
   <div class="card_row top">
     <app-stock
@@ -5,7 +11,8 @@
       [(cards)]="playingCards[CLOSED_STOCK]"
       [(open)]="playingCards[OPEN_STOCK]"
       [(dragging)]="dragging"
-      (toFoundation)="toFoundation($event)"
+      (toFoundation)="toFoundation($event.from, $event.card)"
+      (save)="moves.push({...$event, flipped: false})"
     ></app-stock>
     <div class="empty_space"></div>
     <div class="foundations">
@@ -26,7 +33,7 @@
         [cards]="playingCards[pile]"
         [(dragging)]="dragging"
         (dropped)="drop($event, dragging())"
-        (toFoundation)="toFoundation($event)"
+        (toFoundation)="toFoundation($event.from, $event.card)"
       ></app-pile>
     }
   </div>
@@ -34,7 +41,7 @@
 <div
   id="finish-overlay"
   [style.display]="finish() ? 'block' : 'none'"
-  (click)="finish.set(false); startGame()"
+  (click)="finish.set(false); newGame()"
 >
   <div id="finish">You won!</div>
 </div>

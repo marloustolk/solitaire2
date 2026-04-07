@@ -30,3 +30,13 @@
   height: 20vh;
   aspect-ratio: 2 / 3;
 }
+
+.slide {
+  animation-name: slide;
+  animation-duration: .3s;
+}
+
+@keyframes slide {
+  0%   {transform:translate(-100%, 0)}
+  100%  {transform:translate(0, 0)}
+}
