@@ -1,13 +1,15 @@
 :host {
   display: block;
-  height: 20vh;
+  width: 100%;
+  height: auto;
   aspect-ratio: 2 / 3;
 }
 
 .card {
   display: flex;
   flex-direction: column;
-  height: 20vh;
+  width: 90%;
+  height: auto;
   aspect-ratio: 2 / 3;
   position: absolute;
   perspective: 1000px;
@@ -68,9 +70,11 @@
       flex-wrap: wrap;
     }
     .rank2,
-    .rank4,
+    .rank4 {
+      line-height: 9vh;
+    }
     .rank5 {
-      line-height: 10vh;
+      line-height: 8vh;
     }
     .rank2 div,
     .rank3 div {
@@ -94,19 +98,19 @@
       line-height: 1vh;
     }
     .rank6 {
-      line-height: 5vh;
-    }
-    .rank7 {
       line-height: 4.5vh;
     }
+    .rank7 {
+      line-height: 4vh;
+    }
     .rank8 {
-      line-height: 3.5vh;
+      line-height: 3vh;
     }
     .rank9 {
       line-height: 3vh;
     }
     .rank10 {
-      line-height: 3vh;
+      line-height: 2.5vh;
     }
   }
 

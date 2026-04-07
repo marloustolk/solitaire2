@@ -20,23 +20,29 @@ export class StockComponent {
   animate = false;
 
   async flip(): Promise<void> {
+    this.animate = true;
     let closed = this.cards();
     let open = this.open();
 
     if (closed.length === 0) {
-      this.save.emit({ from: 1, to: 0, cards: [...open] });
-      open.forEach(card => card.closed = true);
-      this.cards.set(open.reverse());
+      this.save.emit({ from: 1, to: 0, cards: open });
+
+      this.cards.set(open.map(card => { return { value: card.value, closed: true } }).reverse());
       this.open.set([]);
     } else {
       closed[closed.length - 1].closed = false;
-      await new Promise(resolve => setTimeout(resolve, 250));
+      await this.sleep(200);
+
       const toFlip = closed.pop()!;
       this.save.emit({ from: 0, to: 1, cards: [{ value: toFlip.value, closed: true }] });
-      this.open.set([...this.open(), toFlip]);
-      this.animate = true;
-      await new Promise(resolve => setTimeout(resolve, 5));
-      this.animate = false;
+      this.open.set([...open, toFlip]);
+
+      await this.sleep(10);
     }
+    this.animate = false;
+  }
+
+  private async sleep(miliseconds: number): Promise<void> {
+    await new Promise(resolve => setTimeout(resolve, miliseconds));
   }
 }

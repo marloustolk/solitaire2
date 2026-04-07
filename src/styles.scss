@@ -8,53 +8,9 @@ body {
   background-repeat: no-repeat;
   background-position: center;
   background-size: max(100vh, 100vw);
+  height: 100vh;
+  width: 100vw;
   overflow: hidden;
-}
-
-@media (orientation: portrait) {
-  body {
-    background-size: 100vh auto !important;
-  }
-  .card_container_pile {
-    top: calc(var(--index) * 7%) !important;
-  }
-  .card_row.top {
-    height: 40% !important;
-  }
-  .empty {
-    height: 12vh !important;
-  }
-  .card {
-    height: 12vh !important;
-  }
-  .top,
-  .bottom {
-     font-size: 2vh !important;
-  }
-  .center {
-    font-size: 2.5vh !important;
-    .rank2,
-    .rank4,
-    .rank5 {
-      line-height: 4vh !important;
-    }
-    .rank5 div:nth-child(3),
-    .rank7 div:nth-child(5),
-    .rank9 div:nth-child(7),
-    .rank10 div:nth-child(3),
-    .rank10 div:nth-child(8) {
-      line-height: .5vh !important;
-    }
-    .rank6 {
-      line-height: 2.5vh !important;
-    }
-    .rank7, .rank8 {
-      line-height: 2vh !important;
-    }
-    .rank9, .rank10 {
-      line-height: 1.5vh !important;
-    }
-  }
 }
 
 .draggable {
@@ -64,4 +20,63 @@ body {
 
 .draggable:active {
   cursor: grabbing;
+}
+
+@media (orientation: portrait) {
+  body {
+    background-size: 100vh auto !important;
+  }
+  .button, button {
+    font-size: 2.5vw !important;
+  }
+  .board {
+    height: auto !important;
+    width: 100vw !important;
+  }
+  .card_container_pile {
+    top: calc(var(--index) * 6%) !important;
+  }
+  .card-front {
+    .top {
+      font-size: 2.5vw !important;
+    }
+
+    .center {
+      font-size: 4vw !important;
+
+      .rank2,
+      .rank4 {
+        line-height: 9vw !important;
+      }
+      .rank5 {
+        line-height: 8vw !important;
+      }
+      .rank5 div:nth-child(3),
+      .rank7 div:nth-child(5),
+      .rank9 div:nth-child(7),
+      .rank10 div:nth-child(3),
+      .rank10 div:nth-child(8) {
+        line-height: 1vw !important;
+      }
+      .rank6 {
+        line-height: 4.5vw !important;
+      }
+      .rank7 {
+        line-height: 4vw !important;
+      }
+      .rank8 {
+        line-height: 3vw !important;
+      }
+      .rank9 {
+        line-height: 3vw !important;
+      }
+      .rank10 {
+        line-height: 2.5vw !important;
+      }
+    }
+
+    .bottom {
+      font-size: 2.5vw !important;
+    }
+  }
 }

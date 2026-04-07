@@ -1,5 +1,5 @@
 <div class="stock">
-  <div class="pile" (click)="flip()">
+  <div class="pile" (click)="animate === false && flip()">
     <div class="empty"></div>
     @for (card of cards(); track $index) {
       <div class="card_container" [style.--index]="$index">
